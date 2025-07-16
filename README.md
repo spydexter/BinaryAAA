@@ -40,3 +40,8 @@ F1 Score: 0.9550
 
 AUC-ROC: 0.9944
 
+(https://github.com/user-attachments/assets/9a9a6126-2e12-4b68-96b8-287fbb16e310)
+
+
+
+
