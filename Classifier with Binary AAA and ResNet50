@@ -11,9 +11,8 @@ from tqdm import tqdm
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# -----------------------------------
+
 # STEP 1: Extract ResNet50 Features
-# -----------------------------------
 def extract_resnet_features(base_path, size=(224, 224), limit_per_class=400):
     model = ResNet50(weights='imagenet', include_top=False, pooling='avg')
     X = []
@@ -44,9 +43,9 @@ def extract_resnet_features(base_path, size=(224, 224), limit_per_class=400):
                     print(f"Error loading {img_path}: {e}")
     return np.array(X), np.array(y)
 
-# -----------------------------
+
 # STEP 2: Binary AAA Functions
-# -----------------------------
+
 def sigmoid(v):
     return 1 / (1 + np.exp(-v))
 
@@ -108,27 +107,26 @@ def binary_aaa(X, y, pop_size=30, dim=2048, max_iter=40, alpha=0.6, beta=0.1):
 
     return best_position, best_fitness
 
-# -----------------------------
-# STEP 3: Run the Pipeline
-# -----------------------------
+
+# Run the Pipeline
 if __name__ == "__main__":
     base_path = r"\\Desktop\\New folder (3)\\NCT-CRC-HE-100K"
 
-    print("📥 Extracting deep features using ResNet50...")
+    print("Extracting deep features using ResNet50...")
     X, y = extract_resnet_features(base_path, size=(224, 224), limit_per_class=400)
-    print("✅ Features extracted. Shape:", X.shape)
+    print("Features extracted. Shape:", X.shape)
 
-    print("🚀 Running Binary AAA for feature selection...")
+    print("Running Binary AAA for feature selection...")
     dim = X.shape[1]
     best_solution, best_fit = binary_aaa(X, y, dim=dim, pop_size=30, max_iter=40)
 
-    print("\n✅ Best Feature Subset Found:")
+    print("\nBest Feature Subset Found:")
     print("Selected Features:", np.sum(best_solution))
 
     selected_indices = np.where(best_solution == 1)[0]
     X_selected = X[:, selected_indices]
 
-    print("\n📊 Final Evaluation with 5-Fold Stratified Cross Validation")
+    print("\n Final Evaluation with 5-Fold Stratified Cross Validation")
     skf = StratifiedKFold(n_splits=5)
     all_metrics = []
 
@@ -163,10 +161,11 @@ if __name__ == "__main__":
         all_metrics.append((acc, prec, rec, f1, auc))
 
     avg_metrics = np.mean(all_metrics, axis=0)
-    print("\n📈 Average Performance across 5 folds:")
+    print("\n Average Performance across 5 folds:")
     print(f"Accuracy:  {avg_metrics[0] * 100:.2f}%")
     print(f"Precision: {avg_metrics[1]:.4f}")
     print(f"Recall:    {avg_metrics[2]:.4f}")
     print(f"F1 Score:  {avg_metrics[3]:.4f}")
     print(f"AUC-ROC:   {avg_metrics[4]:.4f}")
+
 
