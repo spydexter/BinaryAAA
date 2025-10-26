@@ -112,7 +112,7 @@ def binary_aaa(X, y, pop_size=30, dim=2048, max_iter=40, alpha=0.6, beta=0.1):
 # STEP 3: Run the Pipeline
 # -----------------------------
 if __name__ == "__main__":
-    base_path = r"C:\\Users\\deads\\OneDrive\\Desktop\\New folder (3)\\NCT-CRC-HE-100K"
+    base_path = r"\\Desktop\\New folder (3)\\NCT-CRC-HE-100K"
 
     print("📥 Extracting deep features using ResNet50...")
     X, y = extract_resnet_features(base_path, size=(224, 224), limit_per_class=400)
@@ -169,3 +169,4 @@ if __name__ == "__main__":
     print(f"Recall:    {avg_metrics[2]:.4f}")
     print(f"F1 Score:  {avg_metrics[3]:.4f}")
     print(f"AUC-ROC:   {avg_metrics[4]:.4f}")
+
